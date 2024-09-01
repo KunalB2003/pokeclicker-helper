@@ -7,7 +7,6 @@
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         .responsive-form {
@@ -24,22 +23,34 @@
         .text-area {
             width: 90%;
             resize: none;
-            padding: 10px;
-            box-sizing: border-box;
+            padding-left: 10px;
+            padding-right: 10px;
             border: 1px solid #ccc;
             border-radius: 4px 0 0 4px;
             outline: none;
         }
 
         .submit-button {
-            width: 10%;
+            width: 5%;
             border: 1px solid #ccc;
             border-left: none;
             border-radius: 0 4px 4px 0;
             background-color: #007bff;
             color: white;
             cursor: pointer;
-            padding: 10px;
+            padding: 1px;
+            box-sizing: border-box;
+        }
+
+        .clear-button {
+            width: 5%;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            background-color: #ec4e4e;
+            color: white;
+            cursor: pointer;
+            padding: 1px;
             box-sizing: border-box;
         }
 
@@ -64,10 +75,11 @@
 </head>
 
 <body>
-    <form class="responsive-form" id="base64Form">
+    <form class="responsive-form" id="base64Form" autocomplete="off">
         <div class="form-group">
-            <textarea class="text-area" id="base64Input" rows="1" placeholder="Paste Save Here"></textarea>
+            <textarea class="text-area" id="base64Input" rows="1" placeholder="Paste Save Here" required></textarea>
             <button type="submit" class="submit-button">Submit</button>
+            <button type="reset" class="clear-button">Clear</button>
         </div>
     </form>
 
@@ -76,13 +88,21 @@
             <% for (let x=0; x < 25; x++) { %>
                 <img id=<%=' x' + x + 'y' + y %> src=<%= 'assets/' + 0 + '.png' %>>
                     <% } %>
-                        <% } %>`
+                        <% } %>
     </div>
 </body>
 
 <script>
+
     document.getElementById('base64Form').addEventListener('submit', e => {
         event.preventDefault();
+
+        //reset the grid-container
+        for (let x = 0; x < 25; x++) {
+            for (let y = 0; y < 12; y++) {
+                document.getElementById('x' + x + 'y' + y).src = 'assets/' + 0 + '.png';
+            }
+        }
 
         const base64String = document.getElementById('base64Input').value;
 
@@ -95,6 +115,14 @@
         } catch (error) {
             console.error('Error determining mine data:', error);
         }
+    });
+
+    document.getElementById('base64Form').addEventListener('reset', e => {
+        event.preventDefault();
+
+        document.getElementById('base64Input').value = '';
+
+        document.querySelector('.submit-button').click();
     });
 
     function manipulateGrid(mineData) {
@@ -125,11 +153,13 @@
 
     function generateColors(numItems) {
         const colors = [];
-        const baseValue = 0.7; 
-        const valueVariance = 0.2; 
+        const baseValue = 0.7;
+        const valueVariance = 0.2;
+
+        offset = Math.random() * 10 - 5;
 
         for (let i = 0; i < numItems; i++) {
-            const hue = (i / numItems) * 360;
+            const hue = (i / numItems) * 360 + offset;
 
             const value = baseValue + (Math.random() * valueVariance - valueVariance / 2);
 
