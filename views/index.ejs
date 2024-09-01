@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>PokeClicker Underground Tool</title>
     <style>
@@ -8,15 +9,18 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         .responsive-form {
             width: 100%;
             display: flex;
         }
+
         .form-group {
             display: flex;
             width: 100%;
             align-items: stretch;
         }
+
         .text-area {
             width: 90%;
             resize: none;
@@ -26,6 +30,7 @@
             border-radius: 4px 0 0 4px;
             outline: none;
         }
+
         .submit-button {
             width: 10%;
             border: 1px solid #ccc;
@@ -37,9 +42,11 @@
             padding: 10px;
             box-sizing: border-box;
         }
+
         .submit-button:hover {
             background-color: #0056b3;
         }
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(25, 1fr);
@@ -48,25 +55,52 @@
             margin: 0;
             padding: 0;
         }
+
         .grid-container img {
             width: 100%;
             display: block;
         }
     </style>
 </head>
+
 <body>
-    <form class="responsive-form">
-        <div class="form-group"> <textarea class="text-area" rows="1"
-                placeholder="Save Data Here"></textarea> <button type="submit"
-                class="submit-button">Submit</button> </div>
+    <form class="responsive-form" id="base64Form">
+        <div class="form-group">
+            <textarea class="text-area" id="base64Input" rows="1" placeholder="Paste Save Here"></textarea>
+            <button type="submit" class="submit-button">Submit</button>
+        </div>
     </form>
+
     <div class="grid-container">
-        <% for (let y = 0; y < 25; y++) { %>
-            <% for (let x = 0; x < 12; x++) { %>
-             <img src=<%= 'assets/' + 0 + '.png' %>>
-            <% } %>
-        <% } %>
+        <% for (let y=0; y < 25; y++) { %>
+            <% for (let x=0; x < 12; x++) { %>
+                <img src=<%='assets/' + 0 + '.png' %>>
+                <% } %>
+                    <% } %>
     </div>
 </body>
-<script></script>
+
+<script>
+    document.getElementById('base64Form').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+
+        const base64String = document.getElementById('base64Input').value;
+
+        try {
+            const mineData = JSON.parse(atob(base64String)).save.underground.mine;
+            console.log('Decoded String:', mineData);
+
+            // manipulateGrid(saveData);
+        } catch (error) {
+            console.error('Error decoding base64 string:', error);
+        }
+    });
+
+    function manipulateGrid(saveData) {
+        // Example: Clear the grid container
+        const gridContainer = document.getElementById('grid-container');
+
+    }
+</script>
+
 </html>
