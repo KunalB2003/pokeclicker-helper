@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PokeClicker Underground Tool</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .responsive-form {
+            width: 100%;
+            display: flex;
+        }
+
+        .form-group {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .text-area {
+            width: 90%;
+            resize: none;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        .submit-button {
+            width: 10%;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(25, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            gap: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .grid-container img {
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form class="responsive-form">
+        <div class="form-group">
+            <textarea class="text-area" rows="1" placeholder="Save Data Here"></textarea>
+            <button type="submit" class="submit-button">Submit</button>
+        </div>
+    </form>
+
+    <div class="grid-container">
+        <% for (let y=0; y < 25; y++) { %>
+            <% for (let x=0; x < 12; x++) { %>
+                <img src=<%='assets/' + 0 + '.png' %>>
+                <% } %>
+                    <% } %>
+    </div>
+
+</body>
+
+
+<script>
+
+</script>
+
+</html>
