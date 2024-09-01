@@ -125,17 +125,14 @@
 
     function generateColors(numItems) {
         const colors = [];
-        const baseValue = 0.7; // Base value for brightness (0.0 - 1.0)
-        const valueVariance = 0.2; // Amount to vary the brightness (0.0 - 1.0)
+        const baseValue = 0.7; 
+        const valueVariance = 0.2; 
 
         for (let i = 0; i < numItems; i++) {
-            // Calculate hue for each item
             const hue = (i / numItems) * 360;
 
-            // Slightly vary the value (brightness) for each color
             const value = baseValue + (Math.random() * valueVariance - valueVariance / 2);
 
-            // Convert HSV to RGB
             const color = hsvToRgb(hue, 0.8, value);
 
             colors.push(color);
@@ -144,7 +141,6 @@
         return colors;
     }
 
-    // Helper function to convert HSV to RGB
     function hsvToRgb(h, s, v) {
         let r, g, b;
 
@@ -175,31 +171,23 @@
                 break;
         }
 
-        // Convert to 255 and return as an RGB string
         return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
     }
 
     function replaceImageSrcWithColor(imgElement, hexColor) {
-        // Create a canvas element
         const canvas = document.createElement('canvas');
 
-        // Set the canvas dimensions to match the image dimensions
         canvas.width = imgElement.width;
         canvas.height = imgElement.height;
 
-        // Get the canvas context to draw on it
         const ctx = canvas.getContext('2d');
 
-        // Set the fill color to the specified hex color
         ctx.fillStyle = hexColor;
 
-        // Draw a filled rectangle covering the entire canvas
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Get the data URL of the canvas content (as a PNG image)
         const dataURL = canvas.toDataURL();
 
-        // Replace the img src with the data URL of the colored rectangle
         imgElement.src = dataURL;
     }
 </script>
