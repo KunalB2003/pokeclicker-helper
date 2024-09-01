@@ -183,8 +183,11 @@
         const ctx = canvas.getContext('2d');
 
         ctx.fillStyle = hexColor;
-
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = 'gray';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
         const dataURL = canvas.toDataURL();
 
