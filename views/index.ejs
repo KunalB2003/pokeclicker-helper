@@ -74,14 +74,14 @@
     <div class="grid-container">
         <% for (let y=0; y < 12; y++) { %>
             <% for (let x=0; x < 25; x++) { %>
-                <img id=<%=' x' + x + 'y' + y %> src=<%='assets/' + 0 + '.png' %>>
+                <img id=<%=' x' + x + 'y' + y %> src=<%= 'assets/' + 0 + '.png' %>>
                     <% } %>
                         <% } %>`
     </div>
 </body>
 
 <script>
-    document.getElementById('base64Form').addEventListener('submit', function (event) {
+    document.getElementById('base64Form').addEventListener('submit', e => {
         event.preventDefault();
 
         const base64String = document.getElementById('base64Input').value;
@@ -98,19 +98,109 @@
     });
 
     function manipulateGrid(mineData) {
-        const items = mineData.itemsBuried + mineData.itemsFound;
+        const numItems = mineData.itemsBuried + mineData.itemsFound;
+        const colorArray = generateColors(numItems);
+
+        const colorDictionary = {};
+        let colIndex = 0;
 
         for (let x = 0; x < 25; x++) {
             for (let y = 0; y < 12; y++) {
                 document.getElementById('x' + x + 'y' + y).src = 'assets/' + mineData.grid[y][x] + '.png';
 
                 if (mineData.rewardGrid[y][x] !== 0) {
-                    distinctItems.add(mineData.rewardGrid[y][x]);
+                    const reward = mineData.rewardGrid[y][x].value;
+                    if (colorDictionary[reward] === undefined) {
+                        colorDictionary[reward] = colorArray[colIndex];
+                        colIndex++;
+                    }
+
+                    replaceImageSrcWithColor(document.getElementById('x' + x + 'y' + y), colorDictionary[reward]);
                 }
             }
         }
 
-        console.log('Number of distinct values:', distinctItems.size);
+        console.log(colorDictionary);
+    }
+
+    function generateColors(numItems) {
+        const colors = [];
+        const baseValue = 0.7; // Base value for brightness (0.0 - 1.0)
+        const valueVariance = 0.2; // Amount to vary the brightness (0.0 - 1.0)
+
+        for (let i = 0; i < numItems; i++) {
+            // Calculate hue for each item
+            const hue = (i / numItems) * 360;
+
+            // Slightly vary the value (brightness) for each color
+            const value = baseValue + (Math.random() * valueVariance - valueVariance / 2);
+
+            // Convert HSV to RGB
+            const color = hsvToRgb(hue, 0.8, value);
+
+            colors.push(color);
+        }
+
+        return colors;
+    }
+
+    // Helper function to convert HSV to RGB
+    function hsvToRgb(h, s, v) {
+        let r, g, b;
+
+        const i = Math.floor(h / 60);
+        const f = h / 60 - i;
+        const p = v * (1 - s);
+        const q = v * (1 - f * s);
+        const t = v * (1 - (1 - f) * s);
+
+        switch (i % 6) {
+            case 0:
+                r = v, g = t, b = p;
+                break;
+            case 1:
+                r = q, g = v, b = p;
+                break;
+            case 2:
+                r = p, g = v, b = t;
+                break;
+            case 3:
+                r = p, g = q, b = v;
+                break;
+            case 4:
+                r = t, g = p, b = v;
+                break;
+            case 5:
+                r = v, g = p, b = q;
+                break;
+        }
+
+        // Convert to 255 and return as an RGB string
+        return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+    }
+
+    function replaceImageSrcWithColor(imgElement, hexColor) {
+        // Create a canvas element
+        const canvas = document.createElement('canvas');
+
+        // Set the canvas dimensions to match the image dimensions
+        canvas.width = imgElement.width;
+        canvas.height = imgElement.height;
+
+        // Get the canvas context to draw on it
+        const ctx = canvas.getContext('2d');
+
+        // Set the fill color to the specified hex color
+        ctx.fillStyle = hexColor;
+
+        // Draw a filled rectangle covering the entire canvas
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Get the data URL of the canvas content (as a PNG image)
+        const dataURL = canvas.toDataURL();
+
+        // Replace the img src with the data URL of the colored rectangle
+        imgElement.src = dataURL;
     }
 </script>
 
